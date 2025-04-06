@@ -81,6 +81,16 @@
                             placeholder="Location">
                     <p th:if="${#fields.hasErrors('location')}" class="text-danger" th:errors="*{'location'}"></p>
                 </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="describe">Describe</label>
+                    <textarea
+                            class="form-control w-20"
+                            id="describe"
+                            name="describe"
+                            th:field="*{describe}"
+                            rows="5"
+                            placeholder="Describe"></textarea>
+                </div>
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>
         </div>

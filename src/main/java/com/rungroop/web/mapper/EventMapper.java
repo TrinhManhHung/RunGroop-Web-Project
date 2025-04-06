@@ -16,6 +16,7 @@ public class EventMapper {
                 .updateOn(eventDto.getUpdateOn())
                 .location(eventDto.getLocation())
                 .club(eventDto.getClub())
+                .describe(eventDto.getDescribe())
                 .build();
     }
     public static EventDto mapToEventDto(Event event){
@@ -30,6 +31,7 @@ public class EventMapper {
                 .updateOn(event.getUpdateOn())
                 .location(event.getLocation())
                 .club(event.getClub())
+                .describe(event.getDescribe())
                 .build();
     }
 }

@@ -29,7 +29,9 @@ public class Event {
     @CreationTimestamp
     private LocalDateTime updateOn;
     private String location;
-
+//    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String describe;
     @ManyToOne
     @JoinColumn(name="club_id", nullable = false)
     private Club club;

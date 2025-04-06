@@ -7,6 +7,9 @@ package com.rungroop.web.controller;
  */
 
 import com.rungroop.web.models.Club;
+import com.rungroop.web.models.UserEntity;
+import com.rungroop.web.security.SecurityUtil;
+import com.rungroop.web.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 import com.rungroop.web.dto.ClubDto;
@@ -20,16 +23,29 @@ import java.util.List;
 
 @Controller
 public class ClubController {
+    private UserService userService;
     private ClubService clubService;
 
     @Autowired
-    public ClubController(ClubService clubService) {
+    public ClubController(ClubService clubService, UserService userService) {
+        this.userService = userService;
         this.clubService = clubService;
+    }
+    @GetMapping("/")
+    public String home() {
+        return "home";
     }
 
     @GetMapping("/clubs")
     public String listClubs(Model model) {
+        UserEntity user = new UserEntity();
         List<ClubDto> clubs = clubService.findAllClubs();
+        String email = SecurityUtil.getSessionUser();
+        if(email != null) {
+            user = userService.findByEmail(email);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         model.addAttribute("clubs", clubs);
         return "clubs-list";
     }
@@ -56,7 +72,14 @@ public class ClubController {
 
     @GetMapping("/clubs/{clubId}")
     public String clubDetail(@PathVariable("clubId") long clubId, Model model){
+        UserEntity user = new UserEntity();
         ClubDto clubDto = clubService.findClubById(clubId);
+        String email = SecurityUtil.getSessionUser();
+        if(email != null) {
+            user = userService.findByEmail(email);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         model.addAttribute("club", clubDto);
         return "clubs-detail";
     }
@@ -92,6 +115,9 @@ public class ClubController {
     public String searchClub(@RequestParam(value = "query") String query, Model model){
         List<ClubDto> clubs = clubService.searchClubs(query != null? query : "");
         model.addAttribute("clubs", clubs);
+        for(ClubDto club : clubs){
+            System.out.println(club);
+        }
         return "clubs-list";
     }
 }

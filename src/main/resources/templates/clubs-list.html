@@ -11,6 +11,10 @@
     <!-- Page Content-->
     <section layout:fragment="body" class="py-5">
         <div class="container px-5 my-5">
+<!--        Điều kiện này kiểm tra nếu tham số success xuất hiện trong URL (?success), thì thẻ <div> sẽ được hiển thị.-->
+            <div th:if="${param.success}" class="alert alert-success">
+                You are registered successfully!
+            </div>
             <div class="text-center mb-5">
                 <h1 class="fw-bolder">Find Running Clubs</h1>
                 <p class="lead fw-normal text-muted mb-0">Find running clubs near you</p>
@@ -23,11 +27,15 @@
                 </div>
                 <div th:each="club : ${clubs}" class="col-lg-6 mb-3">
                     <div class="position-relative mb-2 img">
-                        <img class="img-fluid rounded-3 mb-2" th:src="${club.photoUrl}" alt="..." />
+                        <div class="d-flex align-items-center justify-content-center" style="width: 600px; height: 350px; overflow: hidden;">
+                            <img class="w-100 h-100" style="object-fit: cover; border-radius: 15px;" th:src="${club.photoUrl}" alt="..." />
+                        </div>
                         <a th:text="${club.title}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Project name</a>
                     </div>
                     <a class="btn btn-primary" th:href="@{/clubs/{clubId}(clubId=${club.id})}">View</a>
-                    <a class="btn btn-primary" th:href="@{/clubs/{clubId}/edit(clubId=${club.id})}">Edit</a>
+                    <div th:if="${user.id} == ${club.createdBy.id}">
+                        <a class="btn btn-primary" th:href="@{/clubs/{clubId}/edit(clubId=${club.id})}">Edit</a>
+                    </div>
                 </div>
             </div>
         </div>

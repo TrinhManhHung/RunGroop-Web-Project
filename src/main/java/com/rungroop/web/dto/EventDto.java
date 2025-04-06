@@ -27,4 +27,5 @@ public class EventDto {
     private LocalDateTime updateOn;
     private String location;
     private Club club;
+    private String describe;
 }

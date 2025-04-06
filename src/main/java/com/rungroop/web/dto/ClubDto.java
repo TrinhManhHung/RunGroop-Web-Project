@@ -1,5 +1,6 @@
 package com.rungroop.web.dto;
 //bảo mật dữ liệu, tránh việc client nhận được những thông tin không cần thiết hoặc nhạy cảm.
+import com.rungroop.web.models.UserEntity;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,7 @@ public class ClubDto {
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
     private List<EventDto> events;
+    private UserEntity createdBy;
+    @NotEmpty(message = "Describe content should not be empty")
+    private String describe;
 }

@@ -3,7 +3,7 @@
       layout:decorate="~{layout}"
 >
 <head>
-  <title>Club Create</title>
+  <title>Event Detail</title>
 </head>
 <body class="d-flex flex-column">
 <!-- Page Content-->
@@ -12,7 +12,7 @@
     <div class="container">
       <div class="text-center my-5">
         <h1 class="fw-bolder" th:text="${event.name}"></h1>
-        <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+        <h2 class="card-text" th:text="${event.type}"></h2>
       </div>
     </div>
   </header>
@@ -27,10 +27,12 @@
           <div class="card-body">
             <div class="small text-muted" th:text="${event.createdOn}"></div>
             <h2 class="card-title">About this running event</h2>
-            <p class="card-text" th:text="${event.type}"></p>
             <p class="card-text" th:text="${event.startTime}"></p>
             <p class="card-text" th:text="${event.endTime}"></p>
+            <p class="card-text lead" th:text="${event.describe}"></p>
+            <div th:if="${user.id} == ${event.club.createdBy.id}">
             <a class="btn btn-primary" th:href="@{/events/{eventId}/delete(eventId=${event.id})}">Delete</a>
+            </div>
           </div>
         </div>
         <!-- Nested row for non-featured blog posts-->
@@ -40,37 +42,15 @@
         <!-- Pagination-->
       </div>
       <!-- Side widgets-->
+
       <div class="col-lg-4">
         <!-- Search widget-->
-        <div class="card mb-4">
-          <div class="card-header">Search</div>
-          <div class="card-body">
-            <div class="input-group">
-              <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-              <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-            </div>
-          </div>
-        </div>
         <!-- Categories widget-->
-        <div class="card mb-4">
-          <div class="card-header">Categories</div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-6">
-                <ul class="list-unstyled mb-0">
-                  <li><a href="#!">Road Runner</a></li>
-                  <li><a href="#!">Trail</a></li>
-                  <li><a href="#!">Marathon</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Side widget-->
-        <div class="card mb-4">
-          <div class="card-header">Side Widget</div>
-          <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-        </div>
+        <h5>Địa điểm tổ chức: [[${event.location}]]</h5>
+        <iframe th:src="@{'https://maps.google.com/maps?q=' + ${event.location} + '&output=embed'}"
+                  width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
       </div>
     </div>
   </div>

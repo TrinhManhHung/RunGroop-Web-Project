@@ -12,7 +12,7 @@
       <div class="container">
         <div class="text-center my-5">
           <h1 class="fw-bolder" th:text="${club.title}"></h1>
-          <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+          <h2 class="card-text" th:text="${club.content}"></h2>
         </div>
       </div>
     </header>
@@ -27,9 +27,11 @@
             <div class="card-body">
               <div class="small text-muted" th:text="${club.createdOn}"></div>
               <h2 class="card-title">About this running club</h2>
-              <p class="card-text" th:text="${club.content}"></p>
-              <a class="btn btn-primary" th:href="@{'/clubs/' + ${club.id} + '/delete'}">Delete</a>
-              <a class="btn btn-primary" th:href="@{'/events/' + ${club.id} + '/new'}">Create New Event</a>
+              <p class="card-text lead" th:text="${club.describe}"></p>
+              <div th:if="${user.id} == ${club.createdBy.id}">
+                <a class="btn btn-primary" th:href="@{'/clubs/' + ${club.id} + '/delete'}">Delete</a>
+                <a class="btn btn-primary" th:href="@{'/events/' + ${club.id} + '/new'}">Create New Event</a>
+              </div>
             </div>
           </div>
           <!-- Nested row for non-featured blog posts-->

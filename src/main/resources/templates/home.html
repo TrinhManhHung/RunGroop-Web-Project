@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Club List</title>
+</head>
+<body>
+
+<main>
+    <section layout:fragment="body">
+        <!-- Phần chứa hình nền full screen -->
+        <div class="full-screen-bg">
+<!--                <h1 class="fs-3 fw-bolder">Meetup and connect with runners near you.</h1>-->
+<!--                <p class="text-white-50 mb-0">-->
+<!--                    A community of runners, passionate abou running and life.-->
+<!--                    Ready to find your accountability partner?-->
+<!--                </p>-->
+            <div class="content-box">
+                <div class="mb-3">
+                    <h1 class="display-3">Find a running group</h1>
+                    <span class="lead">
+                    A community of devoted runners, passionate about running and life. Ready to find your accountability partner?
+                    </span>
+                </div>
+                <div><a class="btn btn-primary" th:href="@{/clubs}">Get Start Now</a></div>
+            </div>
+        </div>
+
+        <!-- Nội dung bên dưới -->
+        <section class="py-5">
+            <div class="container my-3 mx-lg-4">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <h2>About Us</h2>
+                        <p class="lead">
+                            Rungroop is a dedicated online community for runners of all levels. Whether you're a beginner or an experienced athlete, our platform helps you connect with local running clubs, discover upcoming events, and find like-minded individuals who share your passion for running. Join us and take your running journey to the next level!
+                        </p>
+                    </div>
+                </div>
+<!--                <div class="col-lg-6">-->
+<!--                    <h2>About We</h2>-->
+<!--                    <p class="lead col-lg-8">Rungroop is an online platform for runners. This platform will help you to find clubs, schedule events, and meet other runners in your area.</p>-->
+<!--                </div>-->
+            </div>
+        </section>
+    </section>
+</main>
+
+</body>
+</html>

@@ -1,10 +1,7 @@
 package com.rungroop.web.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,6 +16,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
+@ToString(exclude = {"events", "describe"})
+@EqualsAndHashCode(exclude = {"events", "describe"})
+
 @Table(name = "clubs")
 public class Club {
     @Id
@@ -31,7 +31,13 @@ public class Club {
     private LocalDateTime createdOn;
     @UpdateTimestamp
     private LocalDateTime updatedOn;
-
+    @Lob
+//    @Basic(fetch = FetchType.EAGER)
+//    @Column(columnDefinition = "TEXT")
+    private String describe;
+    @ManyToOne
+    @JoinColumn(name = "created_by", nullable = false)
+    private UserEntity createdBy;
     //mappedBy = "club": Đây là khóa ngoại ở Event
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<Event> events = new ArrayList<>();

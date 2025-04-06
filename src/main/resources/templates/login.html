@@ -1,0 +1,97 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+<head>
+    <title>Login</title>
+    <style>
+        /* Ảnh nền bao phủ toàn màn hình */
+        .full-screen-bg {
+            background-image: url('https://plus.unsplash.com/premium_photo-1726403421924-eeb265f8c57a?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover; /* Ảnh bao toàn bộ */
+            background-position: center; /* Căn giữa ảnh */
+            background-repeat: no-repeat;
+            width: 100vw; /* Chiều rộng 100% màn hình */
+            height: 100vh; /* Chiều cao 100% màn hình */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+
+        .content-box {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.6); /* Nền mờ */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 40%;
+            /*text-align: left;*/
+        }
+    </style>
+</head>
+<section layout:fragment="body">
+    <style>
+        .main {
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-width: 450px) {
+            .login-form{
+                margin-top: 10%;
+            }
+            .register-form{
+                margin-top: 10%;
+            }
+        }
+        @media screen and (min-width: 768px){
+            .main{
+                margin-left: 30%;
+            }
+
+            .sidenav{
+                width: 40%;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+            }
+        }
+    </style>
+    <div class="main">
+        <div class="col-md-6 col-sm-12 mt-5">
+            <div th:if="${param.error}" class="alert alert-success">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.</div>
+            <div class="login-form">
+                <form method="post" th:action="@{/login}">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input
+                                id="username"
+                                type="text"
+                                class="form-control"
+                                placeholder="Username"
+                                name="username">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Password</label>
+                        <input
+                                id="password"
+                                type="password"
+                                class="form-control"
+                                placeholder="Password"
+                                name="password">
+                    </div>
+                    <a th:href="@{/register}" type="submit" class="btn btn-black">Don't have an account? Register here.</a>
+                    <button type="submit" value="Log in" class="btn btn-secondary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

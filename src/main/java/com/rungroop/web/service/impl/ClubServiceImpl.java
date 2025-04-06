@@ -2,8 +2,12 @@ package com.rungroop.web.service.impl;
 
 import com.rungroop.web.dto.ClubDto;
 import com.rungroop.web.models.Club;
+import com.rungroop.web.models.UserEntity;
 import com.rungroop.web.repository.ClubRepository;
+import com.rungroop.web.repository.UserRepository;
+import com.rungroop.web.security.SecurityUtil;
 import com.rungroop.web.service.ClubService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +21,13 @@ import static com.rungroop.web.mapper.ClubMapper.mapToClubDto;
 
 public class ClubServiceImpl implements ClubService {
     private ClubRepository clubRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public ClubServiceImpl(ClubRepository clubRepository) {
+    public ClubServiceImpl(ClubRepository clubRepository, UserRepository userRepository) {
+
         this.clubRepository = clubRepository;
+        this.userRepository = userRepository;
     }
     @Override
     public List<ClubDto> findAllClubs() {
@@ -36,13 +43,21 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public void updateClub(ClubDto clubDto) {
+        String email = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByEmail(email);
         Club club = mapToClub(clubDto);
+        club.setCreatedBy(user);
         clubRepository.save(club);
     }
 
     @Override
     public Club saveClub(ClubDto clubDto) {
+        String email = SecurityUtil.getSessionUser();
+//        System.out.println("Username từ session: " + email);
+        UserEntity user = userRepository.findByEmail(email);
+//        System.out.println("User tìm được: " + user);
         Club club = mapToClub(clubDto);
+        club.setCreatedBy(user);
         return clubRepository.save(club);
     }
 
