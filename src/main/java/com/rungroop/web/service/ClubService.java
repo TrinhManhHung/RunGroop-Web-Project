@@ -18,4 +18,6 @@ public interface ClubService {
     void delete(long clubId);
 
     List<ClubDto> searchClubs(String query);
+
+    long countClubs();
 }

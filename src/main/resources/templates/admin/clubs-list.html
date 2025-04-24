@@ -1,0 +1,72 @@
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+>
+<head>
+    <title>Manage Clubs</title>
+    <style>
+        body {
+            padding: 20px;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+
+    <!-- Page Content-->
+    <section layout:fragment="body" class="py-5">
+        <div class="container">
+            <h2 class="mb-4">Manage Clubs</h2>
+            <table class="table table-bordered table-hover align-middle text-center" style="table-layout: fixed;">
+                <colgroup>
+                    <col style="width: 5%;">
+                    <col style="width: 20%;">
+                    <col style="width: 50%;">
+                    <col style="width: 25%;">
+                </colgroup>
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Photo</th>
+                    <th>Title</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="club : ${clubs}">
+                    <td th:text="${club.id}"></td>
+                    <td>
+                        <img th:src="${club.photoUrl}" alt="Club Photo"
+                             class="img-thumbnail"
+                             style="width: 100px; height: 70px; object-fit: cover;">
+                    </td>
+                    <td th:text="${club.title}"></td>
+                    <td>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a class="btn btn-primary btn-sm"
+                               th:href="@{/clubs/{clubId}(clubId=${club.id})}">View</a>
+                            <form th:action="@{/admin/clubs/delete/{clubId}(clubId=${club.id})}" method="post"
+                                  th:object="${club}">
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Bạn có chắc chắn muốn xóa câu lạc bộ này?');">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            <a class="btn btn-primary btn-sm"
+               href="/admin">Back</a>
+        </div>
+    </section>
+</main>
+<!-- Footer-->
+</body>
+</html>

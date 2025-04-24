@@ -60,5 +60,8 @@ public class EventServiceImpl implements EventService {
         eventRepository.deleteById(eventId);
     }
 
-
+    @Override
+    public long countEvents(){
+        return eventRepository.count();
+    }
 }

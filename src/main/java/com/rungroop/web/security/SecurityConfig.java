@@ -28,19 +28,40 @@ public class SecurityConfig {
     }
 
     @Bean
+    public org.springframework.security.web.authentication.AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            authentication.getAuthorities().forEach(auth -> {
+                try {
+                    if (auth.getAuthority().equals("ROLE_ADMIN")) {
+                        response.sendRedirect("/admin");
+                    } else {
+                        response.sendRedirect("/clubs");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        };
+    }
+
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/clubs", "/css/**", "/js/**").permitAll()
-                        .anyRequest().authenticated() // Tất cả các URL khác phải đăng nhập
+                        .requestMatchers("/", "/login", "/register/**", "/clubs", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/clubs")
                         .loginProcessingUrl("/login")
+                        .successHandler(myAuthenticationSuccessHandler())
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll()

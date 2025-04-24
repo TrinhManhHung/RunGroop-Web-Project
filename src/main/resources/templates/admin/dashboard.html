@@ -1,0 +1,56 @@
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+>
+<head>
+  <title>Dashboard</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+
+  <!-- Page Content-->
+  <section layout:fragment="body" class="py-5">
+    <div class="container mt-5">
+      <h1 class="mb-4">Admin Dashboard</h1>
+
+      <div class="row text-center">
+        <div class="col-md-4">
+          <a th:href="@{/admin/users}" class="text-decoration-none text-reset">
+            <div class="card shadow-sm p-3 mb-4 bg-body rounded">
+              <div class="card-body">
+                <h5 class="card-title">Số lượng Users</h5>
+                <h2 th:text="${userCount}">0</h2>
+              </div>
+            </div>
+          </a>
+        </div>
+
+          <div class="col-md-4 ">
+            <a th:href="@{/admin/clubs}" class="text-decoration-none text-reset">
+              <div class="card shadow-sm p-3 mb-4 rounded ">
+                <div class="card-body">
+                  <h5 class="card-title">Số lượng Clubs</h5>
+                  <h2 th:text="${clubCount}">0</h2>
+              </div>
+            </div>
+            </a>
+          </div>
+
+        <div class="col-md-4">
+          <a th:href="@{/admin/events}" class="text-decoration-none text-reset">
+            <div class="card shadow-sm p-3 mb-4 bg-body rounded">
+              <div class="card-body">
+                <h5 class="card-title">Số lượng Events</h5>
+                <h2 th:text="${eventCount}">0</h2>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- Footer-->
+</body>
+</html>

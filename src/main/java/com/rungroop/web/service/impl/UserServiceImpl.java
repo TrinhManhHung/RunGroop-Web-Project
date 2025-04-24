@@ -7,9 +7,12 @@ import com.rungroop.web.repository.UserRepository;
 import com.rungroop.web.repository.RoleRepository;
 import com.rungroop.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -43,4 +46,23 @@ public class UserServiceImpl implements UserService {
     public UserEntity findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    @Override
+    public long countUsers() {
+        return userRepository.count() - 1;
+    }
+
+    @Override
+    public List<UserEntity> findAllUsers() {
+        List<UserEntity> users = userRepository.findAllExcludingAdmin();
+        return users;
+    }
+
+    @Override
+    public void delete(Long userId) {
+
+        userRepository.deleteById(userId);
+    }
+
+
 }

@@ -15,4 +15,6 @@ public interface EventService {
     void updateEvent(@Valid EventDto eventDto);
 
     void deleteEvent(Long eventId);
+
+    long countEvents();
 }
