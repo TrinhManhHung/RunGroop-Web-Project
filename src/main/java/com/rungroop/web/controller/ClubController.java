@@ -6,7 +6,9 @@ package com.rungroop.web.controller;
 
  */
 
+import com.rungroop.web.dto.EventDto;
 import com.rungroop.web.models.Club;
+import com.rungroop.web.models.Event;
 import com.rungroop.web.models.UserEntity;
 import com.rungroop.web.security.SecurityUtil;
 import com.rungroop.web.service.UserService;
@@ -79,6 +81,9 @@ public class ClubController {
             user = userService.findByEmail(email);
             model.addAttribute("user", user);
         }
+        for(EventDto x : clubDto.getEvents()) {
+            System.out.println(x);
+        }
         model.addAttribute("user", user);
         model.addAttribute("club", clubDto);
         return "clubs-detail";
@@ -113,10 +118,17 @@ public class ClubController {
 
     @GetMapping("/clubs/search")
     public String searchClub(@RequestParam(value = "query") String query, Model model){
+        UserEntity user = new UserEntity();
+        String email = SecurityUtil.getSessionUser();
+        if(email != null) {
+            user = userService.findByEmail(email);
+            model.addAttribute("user", user);
+        }
         List<ClubDto> clubs = clubService.searchClubs(query != null? query : "");
         model.addAttribute("clubs", clubs);
         for(ClubDto club : clubs){
             System.out.println(club);
+            System.out.println(club.getCreatedBy().getId());
         }
         return "clubs-list";
     }

@@ -9,6 +9,8 @@ import com.rungroop.web.security.SecurityUtil;
 import com.rungroop.web.service.ClubService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,11 +68,18 @@ public class ClubServiceImpl implements ClubService {
         clubRepository.deleteById(clubId);
     }
 
+//    @Override
+//    public List<ClubDto> searchClubs(String query){
+//        List<Club> clubs = clubRepository.searchClubs(query);
+//        return clubs.stream().map(club -> mapToClubDto(club)).collect(Collectors.toList());
+//    }
+
+
     @Override
-    public List<ClubDto> searchClubs(String query){
-        List<Club> clubs = clubRepository.searchClubs(query);
-        return clubs.stream().map(club -> mapToClubDto(club)).collect(Collectors.toList());
+    public List<ClubDto> searchClubs(String query) {
+        return clubRepository.searchClubs(query);
     }
+
 
     @Override
     public long countClubs() {

@@ -34,8 +34,8 @@ public class Club {
     @UpdateTimestamp
     private LocalDateTime updatedOn;
     @Lob
-//    @Basic(fetch = FetchType.EAGER)
-//    @Column(columnDefinition = "TEXT")
+    @Basic(fetch = FetchType.EAGER)
+    @Column(columnDefinition = "TEXT")
     private String describe;
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)

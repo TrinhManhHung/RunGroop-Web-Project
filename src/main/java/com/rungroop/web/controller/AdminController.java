@@ -48,6 +48,9 @@ public class AdminController {
     public String showUser(Model model) {
         List<UserEntity> users = userService.findAllUsers();
         model.addAttribute("users", users);
+        for(UserEntity user : users) {
+            System.out.println(user.getEmail() + " " + user.getUsername());
+        }
         return "admin/users-list";
     }
     @PostMapping("users/delete/{id}")
