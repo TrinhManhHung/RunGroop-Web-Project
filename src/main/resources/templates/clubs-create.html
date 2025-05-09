@@ -11,7 +11,7 @@
   <!-- Page Content-->
   <section layout:fragment="body" class="py-5">
     <div class="container">
-      <form role="form" method="post" th:action="@{/clubs/new}" th:object="${club}">
+      <form role="form" method="post" th:action="@{/clubs/new}" th:object="${club}" enctype="multipart/form-data">
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="title">Title</label>
@@ -22,40 +22,41 @@
                     name="title"
                     th:field="*{title}"
                     placeholder="Title">
-            <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{'title'}"></p>
+            <p th:errors="*{title}" class="text-danger"></p>
           </div>
+
           <div class="form-group col-md-6">
-            <label for="photoUrl">Photourl</label>
+            <label for="photo">Photo</label>
+            <input
+                    type="file"
+                    class="form-control"
+                    id="photo"
+                    name="photo"
+                    accept="image/*">
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="content">Content</label>
             <input
                     type="text"
                     class="form-control"
-                    id="photoUrl"
-                    name="photoUrl"
-                    th:field="*{photoUrl}"
-                    placeholder="Photo Url">
-            <p th:if="${#fields.hasErrors('photoUrl')}" class="text-danger" th:errors="*{'photoUrl'}"></p>
+                    id="content"
+                    name="content"
+                    th:field="*{content}"
+                    placeholder="Content">
+            <p th:errors="*{content}" class="text-danger"></p>
           </div>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="content">Content</label>
-          <input
-                  type="text"
-                  class="form-control"
-                  id="content"
-                  name="content"
-                  th:field="*{content}"
-                  placeholder="Content">
-          <p th:if="${#fields.hasErrors('content')}" class="text-danger" th:errors="*{'content'}"></p>
-        </div>
-        <div class="form-group col-md-6 mb-3">
-          <label for="describe">Describe</label>
-          <textarea
-                  class="form-control w-20"
-                  id="describe"
-                  name="describe"
-                  th:field="*{describe}"
-                  rows="5"
-                  placeholder="Describe"></textarea>
+          <div class="form-group col-md-6 mb-3">
+            <label for="describe">Describe</label>
+            <textarea
+                    class="form-control w-20"
+                    id="describe"
+                    name="describe"
+                    th:field="*{describe}"
+                    rows="5"
+                    placeholder="Describe"></textarea>
+            <p th:errors="*{describe}" class="text-danger"></p>
+          </div>
         </div>
         <button type="submit" class="btn btn-primary">Create</button>
       </form>

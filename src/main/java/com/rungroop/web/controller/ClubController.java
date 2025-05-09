@@ -11,6 +11,7 @@ import com.rungroop.web.models.Club;
 import com.rungroop.web.models.Event;
 import com.rungroop.web.models.UserEntity;
 import com.rungroop.web.security.SecurityUtil;
+import com.rungroop.web.service.UploadFileService;
 import com.rungroop.web.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,11 +29,13 @@ import java.util.List;
 public class ClubController {
     private UserService userService;
     private ClubService clubService;
+    private UploadFileService uploadFileService;
 
     @Autowired
-    public ClubController(ClubService clubService, UserService userService) {
+    public ClubController(ClubService clubService, UserService userService, UploadFileService uploadFileService) {
         this.userService = userService;
         this.clubService = clubService;
+        this.uploadFileService = uploadFileService;
     }
     @GetMapping("/")
     public String home() {
@@ -61,16 +65,29 @@ public class ClubController {
     }
 
     @PostMapping("/clubs/new")
-    public String saveClub(@ModelAttribute("club") ClubDto clubDto,
-                            @Valid BindingResult result,
-                           Model model) {
-        if(result.hasErrors()){
+    public String saveClub(
+            @Valid @ModelAttribute("club") ClubDto clubDto,
+            BindingResult result, // chuyển BindingResult ngay sau DTO
+            @RequestParam("photo") MultipartFile file,
+            Model model
+    ) {
+        if (result.hasErrors() || file.isEmpty()) {
+//            result.getFieldErrors().forEach(error -> {
+//                System.out.println("Lỗi tại field: " + error.getField() + " - " + error.getDefaultMessage());
+//            });
             model.addAttribute("club", clubDto);
             return "clubs-create";
         }
+
+        String photoUrl = uploadFileService.handleSaveUploadedFile(file, "clubs");
+        if (photoUrl != null && !photoUrl.isEmpty()) {
+            clubDto.setPhotoUrl(photoUrl);
+        }
+
         clubService.saveClub(clubDto);
         return "redirect:/clubs";
     }
+
 
     @GetMapping("/clubs/{clubId}")
     public String clubDetail(@PathVariable("clubId") long clubId, Model model){
@@ -100,13 +117,20 @@ public class ClubController {
     public String updateClub(@PathVariable("clubId") Long clubId,
                              @Valid @ModelAttribute("club") ClubDto club,
                              BindingResult result,
+                             @RequestParam("photo") MultipartFile file,
                              Model model) {
         if (result.hasErrors()) {
             model.addAttribute("club", club);
             return "clubs-edit";
         }
+
+        ClubDto currentClub = clubService.findClubById(clubId);
+        String photoUrl = currentClub.getPhotoUrl();
+        if(!file.isEmpty()) photoUrl = uploadFileService.handleSaveUploadedFile(file, "clubs");
         club.setId(clubId);
+        club.setPhotoUrl(photoUrl);
         clubService.updateClub(club);
+
         return "redirect:/clubs";
     }
 
@@ -126,10 +150,6 @@ public class ClubController {
         }
         List<ClubDto> clubs = clubService.searchClubs(query != null? query : "");
         model.addAttribute("clubs", clubs);
-        for(ClubDto club : clubs){
-            System.out.println(club);
-            System.out.println(club.getCreatedBy().getId());
-        }
         return "clubs-list";
     }
 }
