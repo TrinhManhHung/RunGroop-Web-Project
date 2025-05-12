@@ -22,7 +22,7 @@
                                 name="name"
                                 th:field="*{name}"
                                 placeholder="Event name">
-                        <p th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{'name'}"></p>
+                        <p th:errors="*{name}" class="text-danger"></p>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="type">Type</label>
@@ -33,19 +33,18 @@
                                 name="type"
                                 th:field="*{type}"
                                 placeholder="Type">
-                        <p th:if="${#fields.hasErrors('type')}" class="text-danger" th:errors="*{'type'}"></p>
+                        <p th:errors="*{type}" class="text-danger"></p>
                     </div>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="photoUrl">Photo</label>
+                    <label for="photo">Photo</label>
                     <input
                             type="file"
                             class="form-control"
-                            id="photoUrl"
-                            name="photoUrl"
+                            id="photo"
+                            name="photo"
                             accept="image/*">
-                    <p th:if="${#fields.hasErrors('photoUrl')}" class="text-danger" th:errors="*{'photoUrl'}"></p>
                 </div>
 
                 <div class="form-group mb-3">
@@ -69,7 +68,6 @@
 
                             th:field="*{endTime}"
                             placeholder="End Time">
-                    <p th:if="${#fields.hasErrors('endTime')}" class="text-danger" th:errors="*{'endTime'}"></p>
                 </div>
                 <div class="form-group mb-3">
                     <label for="location">Location</label>
@@ -80,7 +78,7 @@
                             name="location"
                             th:field="*{location}"
                             placeholder="Location">
-                    <p th:if="${#fields.hasErrors('location')}" class="text-danger" th:errors="*{'location'}"></p>
+                    <p th:errors="*{location}" class="text-danger"></p>
                 </div>
                 <div class="form-group col-md-6 mb-3">
                     <label for="describe">Describe</label>
@@ -91,6 +89,7 @@
                             th:field="*{describe}"
                             rows="5"
                             placeholder="Describe"></textarea>
+                    <p th:errors="*{describe}" class="text-danger"></p>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>

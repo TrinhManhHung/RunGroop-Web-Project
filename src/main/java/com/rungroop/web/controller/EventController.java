@@ -6,16 +6,15 @@ import com.rungroop.web.models.Event;
 import com.rungroop.web.models.UserEntity;
 import com.rungroop.web.security.SecurityUtil;
 import com.rungroop.web.service.EventService;
+import com.rungroop.web.service.UploadFileService;
 import com.rungroop.web.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,11 +23,13 @@ import java.util.List;
 public class EventController {
     private UserService userService;
     private EventService eventService;
+    private UploadFileService uploadFileService;
 
     @Autowired
     public EventController(EventService eventService, UserService userService) {
         this.userService = userService;
         this.eventService = eventService;
+        this.uploadFileService = new UploadFileService();
     }
 
     @GetMapping("/events")
@@ -75,13 +76,21 @@ public class EventController {
     }
 
     @PostMapping("/events/{clubId}")
-    public String createEvent(@PathVariable("clubId") Long clubId, @ModelAttribute("event") EventDto eventDto,
+    public String createEvent(@PathVariable("clubId") Long clubId,
+                              @Valid @ModelAttribute("event") EventDto eventDto,
                               BindingResult result,
+                              @RequestParam("photo") MultipartFile file,
                               Model model) {
-        if(result.hasErrors()) {
+        if(result.hasErrors() || file.isEmpty()) {
             model.addAttribute("event", eventDto);
-            return "clubs-create";
+            return "events-create";
         }
+
+        String photoUrl = uploadFileService.handleSaveUploadedFile(file, "events");
+        if(photoUrl != null && !photoUrl.isEmpty()) {
+            eventDto.setPhotoUrl(photoUrl);
+        }
+
         eventService.createEvent(clubId, eventDto);
         return "redirect:/clubs/" + clubId;
     }
@@ -90,15 +99,20 @@ public class EventController {
     public String updateEvent(@PathVariable("eventId") Long eventId,
                              @Valid @ModelAttribute("event") EventDto event,
                              BindingResult result,
+                             @RequestParam("photo") MultipartFile file,
                              Model model) {
         if (result.hasErrors()) {
             model.addAttribute("event", event);
             return "events-edit";
         }
-
         EventDto eventDto = eventService.findEventById(eventId);
+
+        String photoUrl = uploadFileService.handleSaveUploadedFile(file, "events");
+        if(file.isEmpty()) photoUrl = eventDto.getPhotoUrl();
+
         event.setId(eventId);
         event.setClub(eventDto.getClub());
+        event.setPhotoUrl(photoUrl);
         eventService.updateEvent(event);
         return "redirect:/events";
     }
