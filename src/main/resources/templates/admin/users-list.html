@@ -1,55 +1,95 @@
-<html xmlns:th="http://thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}"
->
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Manage Users</title>
+    <meta charset="UTF-8">
+    <title>Manage Clubs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet" />
     <style>
         body {
-            padding: 20px;
+            display: flex;              /* <-- đây là key để sidebar + main-content nằm cạnh */
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .sidebar {
+            width: 220px;
+            background-color: #343a40;
+            color: #fff;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h4 {
+            margin: 0;
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #495057;
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 0.75rem 1rem;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background-color: #495057;
+            color: #fff;
+        }
+        .main-content {
+            flex-grow: 1;
+            background: #f8f9fa;
+            padding: 2rem;
         }
         .table td, .table th {
             vertical-align: middle;
         }
     </style>
 </head>
+<body>
+<!-- Sidebar -->
+<nav class="sidebar">
+    <h4>Admin Panel</h4>
+    <a th:href="@{/admin}" class="nav-link" th:classappend="${activePage=='dashboard'}?' active'">🏠 Dashboard</a>
+    <a th:href="@{/admin/users}" class="nav-link" th:classappend="${activePage=='users'}?' active'">👤 User Manager</a>
+    <a th:href="@{/admin/clubs}" class="nav-link" th:classappend="${activePage=='clubs'}?' active'">🏃 Club Manager</a>
+    <a th:href="@{/admin/events}" class="nav-link" th:classappend="${activePage=='events'}?' active'">📅 Event Manager</a>
+    <a th:href="@{/logout}" class="nav-link">🚪 Logout</a>
+</nav>
 
-<body class="d-flex flex-column h-100">
-<main class="flex-shrink-0">
-
-    <!-- Page Content-->
-    <section layout:fragment="body" class="py-5">
-        <div class="container">
-            <h2 class="mb-4">Manage Users</h2>
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.id}"></td>
-                    <td th:text="${user.username}"></td>
-                    <td th:text="${user.email}"></td>
-                    <td>
-                        <form th:action="@{/admin/users/delete/{userId}(userId=${user.id})}" method="post" th:object="${user}">
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <a class="btn btn-primary btn-sm"
-               href="/admin">Back</a>
-        </div>
-    </section>
+<!-- Main content -->
+<main class="main-content">
+    <h2 class="mb-4">Manage Users</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <form th:action="@{/admin/users/delete/{userId}(userId=${user.id})}" method="post" th:object="${user}">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-secondary btn-sm" th:href="@{/admin}">Back</a>
 </main>
-<!-- Footer-->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
