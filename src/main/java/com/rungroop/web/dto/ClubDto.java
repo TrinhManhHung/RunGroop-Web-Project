@@ -35,4 +35,5 @@ public class ClubDto {
         this.photoUrl = photoUrl;
         this.createdBy = createdBy;
     }
+
 }

@@ -26,13 +26,17 @@
                     </form>
                 </div>
                 <div th:each="club : ${clubs}" class="col-lg-6 mb-3">
-                    <div class="position-relative mb-2 img">
-                        <div class="d-flex align-items-center justify-content-center" style="width: 600px; height: 350px; overflow: hidden;">
-                            <img class="w-100 h-100" style="object-fit: cover; border-radius: 15px;" th:src="@{${club.photoUrl}}" alt="..." />
-<!--                            <img th:src="@{${club.photoUrl}}" alt="Ảnh câu lạc bộ" />-->
+                    <a th:href="@{/clubs/{clubId}(clubId=${club.id})}" class="text-decoration-none text-reset">
+                        <div class="position-relative mb-2 img">
+
+                                <div class="d-flex align-items-center justify-content-center" style="width: 600px; height: 350px; overflow: hidden;">
+                                    <img class="w-100 h-100" style="object-fit: cover; border-radius: 15px;" th:src="@{${club.photoUrl}}" alt="..." />
+        <!--                            <img th:src="@{${club.photoUrl}}" alt="Ảnh câu lạc bộ" />-->
+                                </div>
+                                <h3 th:text="${club.title}"> hehe </h3>
+<!--                            <a th:text="${club.title}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Project name</a>-->
                         </div>
-                        <a th:text="${club.title}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Project name</a>
-                    </div>
+                    </a>
                     <div class="d-flex">
                         <a class="btn btn-primary  me-2" th:href="@{/clubs/{clubId}(clubId=${club.id})}">View</a>
                         <div th:if="${user.id} == ${club.createdBy.id}">

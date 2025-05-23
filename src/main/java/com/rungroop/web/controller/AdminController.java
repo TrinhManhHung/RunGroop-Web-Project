@@ -48,9 +48,9 @@ public class AdminController {
     public String showUser(Model model) {
         List<UserEntity> users = userService.findAllUsers();
         model.addAttribute("users", users);
-        for(UserEntity user : users) {
-            System.out.println(user.getEmail() + " " + user.getUsername());
-        }
+//        for(UserEntity user : users) {
+//            System.out.println(user.getEmail() + " " + user.getUsername());
+//        }
         return "admin/users-list";
     }
     @PostMapping("users/delete/{id}")
@@ -60,12 +60,31 @@ public class AdminController {
     }
 
 
+//    @GetMapping("/clubs")
+//    public String showClubs(Model model) {
+//        List<ClubDto> clubs = clubService.findSortedClubs();
+//        System.out.println(clubs);
+//        model.addAttribute("clubs", clubs);
+//        return "admin/clubs-list";
+//    }
     @GetMapping("/clubs")
-    public String showClubs(Model model) {
-        List<ClubDto> clubs = clubService.findAllClubs();
+    public String getClubs(@RequestParam(name = "sortByEvents", required = false, defaultValue = "false") boolean sortByEvents,
+                           Model model) {
+        List<ClubDto> clubs;
+
+        if (sortByEvents) {
+            clubs = clubService.findSortedClubs();
+            List<Long> eventCount = clubService.findEventCount();
+            model.addAttribute("eventCount", eventCount);
+        } else {
+            clubs = clubService.findAllClubs();
+        }
         model.addAttribute("clubs", clubs);
+        model.addAttribute("activePage", "clubs");
+        model.addAttribute("sortByEvents", sortByEvents);
         return "admin/clubs-list";
     }
+
     @PostMapping("clubs/delete/{id}")
     public String deleteClub(@PathVariable Long id) {
         clubService.delete(id);

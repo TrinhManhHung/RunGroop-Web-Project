@@ -85,5 +85,27 @@ public class ClubServiceImpl implements ClubService {
     public long countClubs() {
         return clubRepository.count();
     }
+
+    @Override
+    public List<ClubDto> findSortedClubs() {
+        List<Object[]> results = clubRepository.findSortedClubs();
+        List<ClubDto> dtos = results.stream().map(r -> {
+            ClubDto dto = new ClubDto();
+            dto.setId(((Number) r[0]).longValue());
+            dto.setTitle((String) r[1]);
+            dto.setPhotoUrl((String) r[2]);
+            return dto;
+        }).collect(Collectors.toList());
+
+        return dtos;
+    }
+
+    public List<Long> findEventCount() {
+        List<Object[]> results = clubRepository.findSortedClubs();
+        return results.stream()
+                .map(r -> ((Number) r[3]).longValue())
+                .collect(Collectors.toList());
+    }
+
 }
 

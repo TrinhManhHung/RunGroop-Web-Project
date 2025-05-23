@@ -2,6 +2,8 @@ package com.rungroop.web.repository;
 
 import com.rungroop.web.dto.ClubDto;
 import com.rungroop.web.models.Club;
+import com.rungroop.web.dto.EventDto;
+import com.rungroop.web.models.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +21,18 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
             "FROM Club c LEFT JOIN c.createdBy " +
             "WHERE c.title LIKE %:query%")
     List<ClubDto> searchClubs(@Param("query") String query);
+
+    @Query(value = """
+        SELECT c.id, c.title, c.photo_url AS photoUrl, COUNT(e.id) AS eventCount
+        FROM clubs c
+        LEFT JOIN event e ON c.id = e.club_id
+        GROUP BY c.id, c.title, c.photo_url
+        ORDER BY eventCount DESC
+    """, nativeQuery = true)
+    List<Object[]> findSortedClubs();
+
+
+
 
 
 

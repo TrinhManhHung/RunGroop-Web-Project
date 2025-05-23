@@ -17,19 +17,19 @@
             </div>
             <div class="row gx-5">
                 <div th:each="event : ${events}" class="col-lg-6 mb-3">
-                    <div class="position-relative mb-2 img">
-                        <div class="d-flex align-items-center justify-content-center" style="width: 600px; height: 350px; overflow: hidden;">
-                            <img class="w-100 h-100" style="object-fit: cover; border-radius: 15px;" th:src="${event.photoUrl}" alt="..." />
-                        </div>
-                    </div>
-                    <div class="card-body mb-2">
-                        <div class="row">
-                            <div class="col-auto small text-muted">
-                                <span th:text="${event.startTime}"></span> - <span th:text="${event.endTime}"></span>
+                        <div class="position-relative mb-2 img">
+                            <div class="d-flex align-items-center justify-content-center" style="width: 600px; height: 350px; overflow: hidden;">
+                                <img class="w-100 h-100" style="object-fit: cover; border-radius: 15px;" th:src="${event.photoUrl}" alt="..." />
                             </div>
                         </div>
-                        <h2 class="card-title h4" th:text="${event.name}"></h2>
-                    </div>
+                        <div class="card-body mb-2">
+                            <div class="row">
+                                <div class="col-auto small text-muted">
+                                    <span th:text="${event.startTime}"></span> - <span th:text="${event.endTime}"></span>
+                                </div>
+                            </div>
+                            <h2 class="card-title h4" th:text="${event.name}"></h2>
+                        </div>
                     <div class="d-flex">
                         <a class="btn btn-primary me-2" th:href="@{/events/{eventId}(eventId=${event.id})}">View</a>
                         <div th:if="${user.id} == ${event.club.createdBy.id}">

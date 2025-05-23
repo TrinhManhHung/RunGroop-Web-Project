@@ -4,6 +4,7 @@ import com.rungroop.web.dto.ClubDto;
 import com.rungroop.web.models.Club;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 //định nghĩa các phương thức cho serviceImpl thực hiện
 public interface ClubService {
@@ -20,4 +21,7 @@ public interface ClubService {
     List<ClubDto> searchClubs(String query);
 
     long countClubs();
+
+    List<ClubDto> findSortedClubs();
+    List<Long> findEventCount();
 }
